@@ -1,0 +1,2932 @@
+﻿<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skillink App</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050814;
+      --panel: #0b1224;
+      --panel-2: #111a31;
+      --panel-3: #172441;
+      --line: rgba(255,255,255,.11);
+      --text: #f7f8ff;
+      --muted: #a9afc2;
+      --soft: #70778c;
+      --blue: #5068ff;
+      --cyan: #00d9ce;
+      --mint: #21c58b;
+      --amber: #f5b84b;
+      --rose: #ff5d7d;
+      --shadow: 0 26px 80px rgba(0,0,0,.46);
+      --radius: 22px;
+      font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 22% 6%, rgba(0,217,206,.22), transparent 31rem),
+        radial-gradient(circle at 82% 2%, rgba(80,104,255,.25), transparent 29rem),
+        linear-gradient(180deg, #050814 0%, #070b18 48%, #090d19 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    button, input, textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      padding: 28px 0 20px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 52px;
+      height: 52px;
+      display: block;
+      border-radius: 16px;
+      border: 1px solid rgba(132,165,255,.28);
+      background: #071026;
+      box-shadow: 0 18px 42px rgba(0,217,206,.16), 0 14px 42px rgba(80,104,255,.18);
+      object-fit: cover;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 42px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pitch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 14px;
+      white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .lang-toggle {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,217,206,.28);
+      background: rgba(0,217,206,.08);
+      color: #dffcff;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .story {
+      min-height: 780px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(0,217,206,.08), rgba(80,104,255,.05)),
+        rgba(6,10,22,.82);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .story::after {
+      content: "";
+      position: absolute;
+      inset: auto -12% -24% -12%;
+      height: 340px;
+      background: radial-gradient(circle, rgba(0,217,206,.16), transparent 62%);
+      pointer-events: none;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(33,197,139,.12);
+      color: #9ef1ce;
+      border: 1px solid rgba(33,197,139,.26);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero h2 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(38px, 7vw, 78px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .hero h2 span {
+      color: #72fff3;
+    }
+
+    .hero-text {
+      max-width: 680px;
+      margin: 22px 0 28px;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .primary, .secondary {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 14px;
+      padding: 0 18px;
+      color: white;
+      font-weight: 800;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--cyan), var(--blue) 62%, #682cff);
+      box-shadow: 0 18px 40px rgba(0,217,206,.18);
+    }
+
+    .secondary {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+    }
+
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(110px, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.065);
+      border: 1px solid var(--line);
+      min-height: 96px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .roadmap {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .road-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 15px;
+      border-radius: 18px;
+      background: rgba(17,19,26,.88);
+      border: 1px solid var(--line);
+    }
+
+    .road-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 12px;
+      background: var(--panel-3);
+    }
+
+    .road-item h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+
+    .road-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .phone-stage {
+      position: sticky;
+      top: 18px;
+      display: grid;
+      justify-items: center;
+      gap: 14px;
+    }
+
+    .identity-strip {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 14px;
+      border-radius: 22px;
+      border: 1px solid rgba(132,165,255,.18);
+      background: linear-gradient(135deg, rgba(0,217,206,.08), rgba(80,104,255,.1));
+    }
+
+    .identity-logo {
+      width: 120px;
+      aspect-ratio: 1;
+      border-radius: 28px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 18px 42px rgba(0,0,0,.32);
+    }
+
+    .identity-strip h3 {
+      margin: 0 0 7px;
+      font-size: 18px;
+    }
+
+    .identity-strip p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .swatch.navy { background: #050814; }
+    .swatch.teal { background: #00d9ce; }
+    .swatch.blue { background: #5068ff; }
+    .swatch.violet { background: #682cff; }
+
+    .screen-tabs {
+      width: min(100%, 390px);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+    }
+
+    .tab {
+      min-height: 38px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      transition: .2s ease;
+    }
+
+    .tab.active {
+      background: rgba(80,104,255,.18);
+      color: var(--text);
+      border-color: rgba(0,217,206,.58);
+    }
+
+    .phone {
+      width: min(100%, 390px);
+      height: 780px;
+      max-height: calc(100vh - 116px);
+      min-height: 640px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: #090a10;
+      box-shadow: var(--shadow), inset 0 0 0 10px #05060a;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 116px;
+      height: 30px;
+      border-radius: 999px;
+      background: #030306;
+      z-index: 20;
+    }
+
+    .app-screen {
+      display: none;
+      height: 100%;
+      overflow: auto;
+      padding: 54px 18px 86px;
+      scrollbar-width: none;
+      background: linear-gradient(180deg, #10131c 0%, #090a10 48%);
+    }
+
+    .app-screen::-webkit-scrollbar { display: none; }
+    .app-screen.active { display: block; }
+
+    .mobile-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .mobile-head h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: block;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .head-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .onboard-logo {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .onboard-logo .logo {
+      width: 96px;
+      height: 96px;
+      display: block;
+      margin: 0 auto 16px;
+      border-radius: 28px;
+      border: 1px solid rgba(132,165,255,.3);
+      background: #071026;
+      object-fit: cover;
+      box-shadow: 0 20px 52px rgba(0,217,206,.18), 0 24px 58px rgba(80,104,255,.2);
+    }
+
+    .onboard-logo h2 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .onboard-logo p, .hint {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .choice-grid {
+      display: grid;
+      gap: 12px;
+      margin: 28px 0 18px;
+    }
+
+    .choice {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.055);
+      color: var(--text);
+      text-align: left;
+    }
+
+    .choice.selected {
+      border-color: rgba(22,200,216,.72);
+      background: rgba(22,200,216,.11);
+    }
+
+    .choice-icon, .avatar {
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: var(--panel-3);
+      color: white;
+    }
+
+    .choice-icon {
+      width: 48px;
+      height: 48px;
+      font-size: 21px;
+    }
+
+    .choice strong, .feed-copy strong, .room-title, .course-title {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+
+    .choice span, .feed-copy span, .room-host, .course-meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .check {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--cyan);
+      color: #041013;
+      font-size: 13px;
+      font-weight: 900;
+      opacity: 0;
+    }
+
+    .choice.selected .check { opacity: 1; }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      overflow: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .chip {
+      flex: 0 0 auto;
+      min-height: 34px;
+      padding: 0 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip.active {
+      color: #dffbff;
+      border-color: rgba(22,200,216,.55);
+      background: rgba(22,200,216,.12);
+    }
+
+    .feed {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    #s-feed {
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+      background: #050814;
+    }
+
+    .reels-head {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 18;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px 10px;
+      background: linear-gradient(180deg, rgba(5,8,20,.98), rgba(5,8,20,.88));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .reels-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 900;
+    }
+
+    .reels-title img {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .reels-tabs {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 17;
+      display: flex;
+      justify-content: flex-start;
+      gap: 8px;
+      padding: 10px 16px 12px;
+      overflow-x: auto;
+      background: linear-gradient(180deg, rgba(5,8,20,.9), rgba(5,8,20,.72));
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      backdrop-filter: blur(18px);
+      scrollbar-width: none;
+    }
+
+    .reel-track {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      overscroll-behavior-y: contain;
+      scrollbar-width: none;
+    }
+
+    .reel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .reels-tabs .chip {
+      min-height: 30px;
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(12px);
+    }
+
+    .reel {
+      height: 100%;
+      min-height: 100%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
+      display: block;
+      padding: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 32% 16%, rgba(0,217,206,.28), transparent 13rem),
+        linear-gradient(160deg, rgba(80,104,255,.24), rgba(5,8,20,.92) 48%, rgba(104,44,255,.28));
+    }
+
+    .reel:nth-of-type(2) {
+      background:
+        radial-gradient(circle at 72% 12%, rgba(33,197,139,.26), transparent 12rem),
+        linear-gradient(155deg, rgba(0,217,206,.18), rgba(5,8,20,.92) 46%, rgba(245,184,75,.2));
+    }
+
+    .reel:nth-of-type(3) {
+      background:
+        radial-gradient(circle at 24% 18%, rgba(255,93,125,.22), transparent 12rem),
+        linear-gradient(155deg, rgba(104,44,255,.3), rgba(5,8,20,.92) 48%, rgba(0,217,206,.15));
+    }
+
+    .reel::before {
+      content: "";
+      position: absolute;
+      inset: 130px 14px 252px;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.025)),
+        radial-gradient(circle at 52% 42%, rgba(255,255,255,.16), transparent 9rem);
+      box-shadow: inset 0 0 70px rgba(0,0,0,.3), 0 24px 52px rgba(0,0,0,.24);
+    }
+
+    .reel::after {
+      content: "";
+      position: absolute;
+      top: 44%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 66px;
+      height: 66px;
+      display: none;
+      border-radius: 999px;
+      background: rgba(5,8,20,.42);
+      border: 1px solid rgba(255,255,255,.2);
+      backdrop-filter: blur(12px);
+      font-size: 22px;
+    }
+
+    .reel-visual {
+      position: absolute;
+      inset: 168px 48px 306px;
+      display: grid;
+      place-items: center;
+      font-size: 88px;
+      opacity: .9;
+      filter: drop-shadow(0 26px 46px rgba(0,0,0,.38));
+    }
+
+    .auto-video {
+      position: absolute;
+      inset: 130px 14px 252px;
+      z-index: 1;
+      overflow: hidden;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(circle at 18% 20%, rgba(0,217,206,.3), transparent 8rem),
+        linear-gradient(145deg, rgba(11,22,44,.95), rgba(6,8,19,.9));
+      box-shadow: inset 0 0 70px rgba(0,0,0,.28), 0 24px 52px rgba(0,0,0,.24);
+    }
+
+    .real-video {
+      position: absolute;
+      inset: 130px 14px 252px;
+      z-index: 1;
+      overflow: hidden;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: #02050d;
+      box-shadow: inset 0 0 70px rgba(0,0,0,.28), 0 24px 52px rgba(0,0,0,.24);
+    }
+
+    .real-video video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    .video-controls {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 4;
+      display: flex;
+      gap: 8px;
+    }
+
+    .video-control {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: white;
+      background: rgba(5,8,20,.72);
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(14px);
+    }
+
+    .auto-video::before,
+    .auto-video::after {
+      content: "";
+      position: absolute;
+      inset: -28%;
+      background:
+        conic-gradient(from 0deg, transparent 0 18%, rgba(0,217,206,.28) 22%, transparent 34%, rgba(80,104,255,.24) 52%, transparent 68%, rgba(104,44,255,.22) 82%, transparent 100%);
+      animation: reelSpin 8s linear infinite;
+      opacity: .8;
+    }
+
+    .auto-video::after {
+      inset: 16%;
+      border-radius: 42%;
+      background: radial-gradient(circle, rgba(255,255,255,.2), transparent 62%);
+      animation: reelPulse 2.8s ease-in-out infinite;
+    }
+
+    .video-orbit {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 24px rgba(0,217,206,.65);
+      animation: orbitOne 4.2s ease-in-out infinite;
+    }
+
+    .video-orbit.two {
+      width: 12px;
+      height: 12px;
+      background: #682cff;
+      animation: orbitTwo 5.4s ease-in-out infinite;
+    }
+
+    .video-meter {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      height: 5px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,.13);
+    }
+
+    .video-meter span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--blue), #682cff);
+      animation: progressLoop 5.2s linear infinite;
+    }
+
+    @keyframes reelSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes reelPulse {
+      0%, 100% { transform: scale(.86); opacity: .42; }
+      50% { transform: scale(1.18); opacity: .74; }
+    }
+
+    @keyframes orbitOne {
+      0%, 100% { transform: translate(56px, 44px); }
+      50% { transform: translate(228px, 126px); }
+    }
+
+    @keyframes orbitTwo {
+      0%, 100% { transform: translate(236px, 54px); }
+      50% { transform: translate(72px, 146px); }
+    }
+
+    @keyframes progressLoop {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    .reel-badge {
+      position: absolute;
+      top: 34px;
+      left: 30px;
+      z-index: 2;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(5,8,20,.62);
+      border: 1px solid rgba(255,255,255,.14);
+      color: #dffcff;
+      font-size: 11px;
+      font-weight: 900;
+      backdrop-filter: blur(14px);
+    }
+
+    .reel-copy {
+      position: absolute;
+      z-index: 5;
+      left: 14px;
+      right: 76px;
+      bottom: 84px;
+      min-height: 156px;
+      padding: 13px 14px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(11,18,36,.9), rgba(8,12,24,.82));
+      box-shadow: 0 18px 44px rgba(0,0,0,.26);
+      backdrop-filter: blur(18px);
+      text-shadow: none;
+    }
+
+    .reel-copy .person-row {
+      margin-bottom: 10px;
+    }
+
+    .reel-copy h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .reel-copy p {
+      margin: 0;
+      color: #dce5f7;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .reel-actions {
+      position: absolute;
+      z-index: 6;
+      right: 16px;
+      bottom: 92px;
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .reel-action {
+      width: 48px;
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      border-radius: 16px;
+      background: rgba(5,8,20,.72);
+      border: 1px solid rgba(255,255,255,.16);
+      color: white;
+      backdrop-filter: blur(16px);
+      font-size: 18px;
+    }
+
+    .reel-action .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .reel-action span {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .reel-action.liked {
+      color: #ff8ca0;
+      border-color: rgba(255,140,160,.34);
+    }
+
+    .reel:not(.is-playing) .auto-video::before,
+    .reel:not(.is-playing) .auto-video::after,
+    .reel:not(.is-playing) .video-orbit,
+    .reel:not(.is-playing) .video-meter span {
+      animation-play-state: paused;
+    }
+
+    .reel.is-playing .auto-video {
+      border-color: rgba(0,217,206,.34);
+    }
+
+    .reel.is-playing .real-video {
+      border-color: rgba(0,217,206,.38);
+    }
+
+    .feed-card, .profile-card, .room, .course, .mini-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .video {
+      min-height: 184px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      background:
+        linear-gradient(135deg, rgba(80,104,255,.32), rgba(0,217,206,.2)),
+        radial-gradient(circle at 25% 20%, rgba(255,255,255,.2), transparent 12rem);
+    }
+
+    .video.code {
+      background:
+        linear-gradient(135deg, rgba(33,197,139,.28), rgba(245,184,75,.16)),
+        repeating-linear-gradient(135deg, transparent 0 12px, rgba(255,255,255,.04) 12px 14px);
+    }
+
+    .video.market {
+      background:
+        linear-gradient(135deg, rgba(255,93,125,.24), rgba(80,104,255,.22)),
+        radial-gradient(circle at 75% 26%, rgba(255,255,255,.17), transparent 9rem);
+    }
+
+    .play {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(0,0,0,.36);
+      border: 1px solid rgba(255,255,255,.22);
+      backdrop-filter: blur(12px);
+      font-size: 20px;
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.34);
+      border: 1px solid rgba(255,255,255,.16);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .feed-body {
+      padding: 14px;
+    }
+
+    .person-row, .room-row, .course-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+    }
+
+    .avatar.photo {
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .avatar.photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .avatar.blue { background: linear-gradient(135deg, var(--blue), var(--cyan)); }
+    .avatar.mint { background: linear-gradient(135deg, var(--mint), #069668); }
+    .avatar.rose { background: linear-gradient(135deg, var(--rose), #b34bff); }
+    .avatar.amber { background: linear-gradient(135deg, var(--amber), #f27744); }
+
+    .spacer { flex: 1; }
+
+    .verify {
+      color: #8ee9ff;
+      font-weight: 900;
+    }
+
+    .caption {
+      margin: 12px 0 12px;
+      color: #d9ddec;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ghost {
+      min-height: 34px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.075);
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .ghost.liked { color: #ff8ca0; }
+
+    .mini-primary {
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(80,104,255,.18);
+      color: #dce6ff;
+      border: 1px solid rgba(80,104,255,.32);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .profile-cover {
+      height: 138px;
+      border-radius: 22px;
+      margin: -2px -2px 0;
+      background:
+        linear-gradient(135deg, rgba(0,217,206,.42), rgba(80,104,255,.26)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 28px);
+      position: relative;
+    }
+
+    .profile-avatar {
+      position: absolute;
+      bottom: -38px;
+      right: 18px;
+      width: 82px;
+      height: 82px;
+      border-radius: 26px;
+      border: 5px solid #0b0d13;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      font-size: 34px;
+      overflow: hidden;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      padding: 52px 16px 16px;
+    }
+
+    .profile-info h2 {
+      margin: 0 0 5px;
+      font-size: 24px;
+    }
+
+    .role {
+      color: #8ee9ff;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .bio {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .profile-stats div {
+      padding: 11px 8px;
+      text-align: center;
+      background: rgba(255,255,255,.04);
+      border-left: 1px solid var(--line);
+    }
+
+    .profile-stats div:last-child { border-left: 0; }
+    .profile-stats strong { display: block; }
+    .profile-stats span { color: var(--soft); font-size: 11px; }
+
+    .portfolio {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .work {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.03)),
+        var(--panel-2);
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      font-size: 30px;
+    }
+
+    .work span {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(0,0,0,.38);
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .form {
+      display: grid;
+      gap: 13px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .field input, .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      min-height: 46px;
+      padding: 12px 13px;
+      background: rgba(255,255,255,.055);
+      color: var(--text);
+      outline: none;
+      resize: none;
+      text-align: left;
+    }
+
+    .field textarea { min-height: 92px; }
+    .field input:focus, .field textarea:focus { border-color: rgba(22,200,216,.66); }
+
+    .field select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      min-height: 46px;
+      padding: 12px 13px;
+      background: rgba(255,255,255,.055);
+      color: var(--text);
+      outline: none;
+    }
+
+    .request-card {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 13px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+    }
+
+    .room {
+      padding: 14px;
+    }
+
+    .room, .course, .work, .road-item, .stat {
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .room:hover, .course:hover, .work:hover, .road-item:hover, .stat:hover {
+      transform: translateY(-1px);
+      border-color: rgba(0,217,206,.34);
+      background-color: rgba(255,255,255,.075);
+    }
+
+    .room-top {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .live {
+      color: #ffdfe5;
+      background: rgba(255,93,125,.13);
+      border: 1px solid rgba(255,93,125,.28);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .soon {
+      color: #fff1d1;
+      background: rgba(245,184,75,.13);
+      border: 1px solid rgba(245,184,75,.25);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .room-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .course {
+      padding: 13px;
+      margin-top: 10px;
+    }
+
+    .course-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(22,200,216,.11);
+      border: 1px solid rgba(22,200,216,.18);
+    }
+
+    .price {
+      color: #9ef1ce;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      height: 62px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      align-items: center;
+      padding: 7px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(10,15,28,.9);
+      backdrop-filter: blur(18px);
+      z-index: 25;
+    }
+
+    .nav {
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      color: var(--soft);
+      background: transparent;
+      font-size: 10px;
+      min-width: 0;
+    }
+
+    .nav b {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      line-height: 1;
+      color: currentColor;
+    }
+
+    .nav b .icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    .nav.active { color: #8ee9ff; }
+    .nav.add b {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: white;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translate(-50%, 140%);
+      opacity: 0;
+      z-index: 50;
+      min-width: min(360px, calc(100vw - 32px));
+      padding: 13px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(22,200,216,.34);
+      background: rgba(14,18,24,.95);
+      box-shadow: var(--shadow);
+      color: var(--text);
+      transition: .28s ease;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .modal-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(3,6,14,.64);
+      backdrop-filter: blur(14px);
+    }
+
+    .modal-layer.show {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(420px, 100%);
+      max-height: min(720px, calc(100vh - 48px));
+      overflow: auto;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(14,22,42,.98), rgba(8,12,24,.98));
+      box-shadow: var(--shadow);
+      scrollbar-width: none;
+    }
+
+    .modal-card::-webkit-scrollbar {
+      display: none;
+    }
+
+    .modal-head {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(10,16,31,.92);
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      backdrop-filter: blur(14px);
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .modal-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .modal-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.055);
+    }
+
+    .modal-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .modal-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      padding: 0 12px;
+    }
+
+    .search-box input {
+      flex: 1;
+      min-width: 0;
+      min-height: 46px;
+      color: var(--text);
+      border: 0;
+      outline: none;
+      background: transparent;
+    }
+
+    .account-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .account-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.055);
+    }
+
+    .account-photo {
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      font-weight: 900;
+      font-size: 22px;
+    }
+
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .account-stat {
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05);
+    }
+
+    .account-stat strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    body.app-mode {
+      background:
+        linear-gradient(180deg, rgba(3,7,18,.96), rgba(5,8,20,.98)),
+        #050814;
+    }
+
+    body.app-mode .shell {
+      width: min(1440px, calc(100% - 28px));
+      min-height: 100vh;
+      padding: 18px 0;
+    }
+
+    body.app-mode .topbar {
+      min-height: 62px;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      background: rgba(7,12,27,.78);
+      box-shadow: 0 18px 48px rgba(0,0,0,.24);
+      backdrop-filter: blur(18px);
+    }
+
+    body.app-mode .brand h1 {
+      font-size: 24px;
+    }
+
+    body.app-mode .brand p {
+      max-width: 520px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    body.app-mode .layout {
+      grid-template-columns: 310px minmax(720px, 1fr);
+      gap: 16px;
+      min-height: calc(100vh - 102px);
+    }
+
+    body.app-mode .story {
+      position: sticky;
+      top: 18px;
+      min-height: calc(100vh - 102px);
+      max-height: calc(100vh - 102px);
+      justify-content: flex-start;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 24px;
+      background:
+        linear-gradient(180deg, rgba(10,17,34,.96), rgba(6,10,22,.96)),
+        rgba(6,10,22,.96);
+      overflow: auto;
+      scrollbar-width: none;
+    }
+
+    body.app-mode .story::-webkit-scrollbar {
+      display: none;
+    }
+
+    body.app-mode .story::after {
+      display: none;
+    }
+
+    body.app-mode .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    body.app-mode .hero h2 {
+      max-width: 100%;
+      font-size: 28px;
+      line-height: 1.18;
+    }
+
+    body.app-mode .hero-text {
+      margin: 12px 0 16px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    body.app-mode .hero-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    body.app-mode .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 0;
+    }
+
+    body.app-mode .stat {
+      min-height: auto;
+      padding: 12px;
+      border-radius: 16px;
+    }
+
+    body.app-mode .stat strong {
+      font-size: 20px;
+    }
+
+    body.app-mode .roadmap {
+      grid-template-columns: 1fr;
+      margin-top: 12px;
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+
+    body.app-mode .road-item {
+      background: rgba(255,255,255,.055);
+    }
+
+    body.app-mode .identity-strip {
+      grid-template-columns: 66px 1fr;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 18px;
+    }
+
+    body.app-mode .identity-logo {
+      width: 66px;
+      border-radius: 18px;
+    }
+
+    body.app-mode .identity-strip h3 {
+      font-size: 15px;
+    }
+
+    body.app-mode .identity-strip p {
+      display: none;
+    }
+
+    body.app-mode .phone-stage {
+      position: sticky;
+      top: 18px;
+      width: 100%;
+      min-width: 0;
+      gap: 10px;
+    }
+
+    body.app-mode .screen-tabs {
+      width: 100%;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      padding: 7px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+      background: rgba(8,13,27,.78);
+      backdrop-filter: blur(18px);
+    }
+
+    body.app-mode .phone {
+      width: 100%;
+      height: calc(100vh - 154px);
+      max-height: none;
+      min-height: 680px;
+      border-radius: 28px;
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    body.app-mode .notch {
+      display: none;
+    }
+
+    body.app-mode .app-screen {
+      padding-top: 26px;
+    }
+
+    body.app-mode #s-feed {
+      padding: 0;
+    }
+
+    body.app-mode .reel-track {
+      display: grid;
+      grid-auto-rows: 100%;
+      justify-content: center;
+      background:
+        linear-gradient(90deg, rgba(0,217,206,.06), transparent 24%, transparent 76%, rgba(80,104,255,.08)),
+        #050814;
+    }
+
+    body.app-mode .reel {
+      width: min(430px, calc(100vw - 36px));
+      margin: 0 auto;
+      border-left: 1px solid rgba(255,255,255,.08);
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+
+    body.app-mode .real-video video {
+      object-fit: contain;
+      background: #02050d;
+    }
+
+    body.app-mode .video-control:hover,
+    body.app-mode .icon-btn:hover,
+    body.app-mode .reel-action:hover {
+      border-color: rgba(0,217,206,.42);
+      color: #bffcff;
+    }
+
+    @media (max-width: 940px) {
+      .layout { grid-template-columns: 1fr; }
+      .story { min-height: auto; }
+      .phone-stage { position: relative; top: 0; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 20px, 1180px); padding-top: 16px; }
+      .topbar { align-items: flex-start; }
+      .pitch { display: none; }
+      .story { padding: 22px; border-radius: 22px; }
+      .stats, .roadmap { grid-template-columns: 1fr; }
+      .identity-strip { grid-template-columns: 1fr; }
+      .identity-logo { width: 96px; }
+      .phone {
+        height: 760px;
+        min-height: 620px;
+        border-radius: 30px;
+      }
+      .screen-tabs { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 980px) {
+      body.app-mode .shell {
+        width: 100%;
+        padding: 0;
+      }
+
+      body.app-mode .topbar,
+      body.app-mode .story,
+      body.app-mode .screen-tabs {
+        display: none;
+      }
+
+      body.app-mode .layout {
+        display: block;
+        min-height: 100dvh;
+      }
+
+      body.app-mode .phone-stage {
+        position: relative;
+        top: 0;
+        display: block;
+        min-height: 100dvh;
+      }
+
+      body.app-mode .phone {
+        width: 100vw;
+        height: 100dvh;
+        min-height: 100dvh;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      body.app-mode .notch {
+        display: block;
+      }
+
+      body.app-mode .app-screen {
+        padding-top: 54px;
+      }
+
+      body.app-mode #s-feed {
+        padding: 0;
+      }
+
+      body.app-mode .reel-track {
+        display: block;
+      }
+
+      body.app-mode .reel {
+        width: 100vw;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+<body class="app-mode">
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <img class="mark" src="skillink-identity-logo.png" alt="Skillink logo">
+        <div>
+          <h1>Skillink</h1>
+          <p>An Algerian platform for skills, services, and live learning rooms</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="lang-toggle" data-lang-toggle type="button">AR / EN</button>
+        <div class="pitch" data-i18n="pitch">Enhanced prototype, ready for presentation</div>
+      </div>
+    </header>
+
+    <section class="layout">
+      <aside class="story">
+        <div class="hero">
+          <div class="eyebrow">Skillink App Workspace</div>
+          <h2>Manage learning, reels, rooms, and <span>service requests</span>.</h2>
+          <p class="hero-text">
+            A desktop app shell for browsing educational reels, opening expert profiles, joining Roomit,
+            and tracking your account activity from one focused workspace.
+          </p>
+          <div class="hero-actions">
+            <button class="primary" data-open="s-feed">View experience</button>
+            <button class="secondary" data-open="s-roomit">Explore Roomit</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="stats">
+            <div class="stat"><strong>5</strong><span>Active app screens ready to use</span></div>
+            <div class="stat"><strong>3</strong><span>Paths: learn, hire, and publish</span></div>
+            <div class="stat"><strong>24h</strong><span>Fast service request workflow</span></div>
+            <div class="stat"><strong>RTL</strong><span>Arabic and English app language</span></div>
+          </div>
+
+          <div class="roadmap">
+            <article class="road-item">
+              <div class="road-icon">📱</div>
+              <div><h3>Skill Feed</h3><p>Short educational reels with account, save, sound, and play controls.</p></div>
+            </article>
+            <article class="road-item">
+              <div class="road-icon">✅</div>
+              <div><h3>Verified Profile</h3><p>Portfolio, stats, courses, and creator information in one account screen.</p></div>
+            </article>
+            <article class="road-item">
+              <div class="road-icon">💼</div>
+              <div><h3>Local Services</h3><p>Request forms, budgets, payment choices, and account follow-up.</p></div>
+            </article>
+            <article class="road-item">
+              <div class="road-icon">🎙️</div>
+              <div><h3>Roomit</h3><p>Live and scheduled rooms that open like app modules.</p></div>
+            </article>
+          </div>
+
+          <div class="identity-strip">
+            <img class="identity-logo" src="skillink-identity-logo.png" alt="Skillink visual identity">
+            <div>
+              <h3>Visual system</h3>
+              <p>The app keeps the Skillink identity colors while reducing clutter and improving screen clarity.</p>
+              <div class="swatches" aria-label="Skillink brand colors">
+                <span class="swatch navy" title="#050814"></span>
+                <span class="swatch teal" title="#00D9CE"></span>
+                <span class="swatch blue" title="#5068FF"></span>
+                <span class="swatch violet" title="#682CFF"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="phone-stage" aria-label="Skillink prototype">
+        <nav class="screen-tabs" aria-label="Prototype screens">
+          <button class="tab" data-open="s-onboard">Start</button>
+          <button class="tab active" data-open="s-feed">Feed</button>
+          <button class="tab" data-open="s-profile">Profile</button>
+          <button class="tab" data-open="s-request">Request</button>
+          <button class="tab" data-open="s-roomit">Roomit</button>
+        </nav>
+
+        <div class="phone">
+          <div class="notch"></div>
+
+          <section class="app-screen" id="s-onboard">
+            <div class="onboard-logo">
+              <img class="logo" src="skillink-identity-logo.png" alt="Skillink logo">
+              <h2>Skillink</h2>
+              <p>Choose your path and start building your skill presence.</p>
+            </div>
+
+            <div class="choice-grid">
+              <button class="choice selected" data-choice>
+                <span class="choice-icon">🎯</span>
+                <span><strong>I want to learn</strong><span>Learn, follow experts, and request trusted services.</span></span>
+                <span class="check">✓</span>
+              </button>
+              <button class="choice" data-choice>
+                <span class="choice-icon">🧑‍💻</span>
+                <span><strong>I offer a skill</strong><span>Showcase work, sell services, and publish courses.</span></span>
+                <span class="check">✓</span>
+              </button>
+            </div>
+
+            <button class="primary" style="width:100%" data-open="s-feed">Enter Skillink</button>
+            <p class="hint" style="text-align:center;margin-top:14px">Clickable prototype designed for a first product presentation.</p>
+          </section>
+
+          <section class="app-screen active" id="s-feed">
+            <div class="reels-head">
+              <div class="reels-title">
+                <img src="skillink-identity-logo.png" alt="Skillink logo">
+                <span>Skillink</span>
+              </div>
+              <div class="head-actions">
+                <button class="icon-btn" title="Search" data-action="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></button>
+                <button class="icon-btn" title="Notifications" data-action="notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg></button>
+                <button class="icon-btn" title="Language" data-lang-toggle><svg class="icon" viewBox="0 0 24 24"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg></button>
+              </div>
+            </div>
+            <div class="reels-tabs" data-group>
+              <button class="chip active">For you</button>
+              <button class="chip">Design</button>
+              <button class="chip">Coding</button>
+              <button class="chip">Marketing</button>
+            </div>
+
+            <div class="reel-track" id="reelTrack">
+            <article class="reel">
+              <div class="reel-badge">Mechanical Engineering</div>
+              <div class="real-video" aria-label="SOLID MECANIQUE autoplay reel">
+                <video src="solid-mecanique-reel.mp4" autoplay muted loop playsinline preload="metadata"></video>
+                <div class="video-controls">
+                  <button class="video-control" data-video-toggle type="button" aria-label="Pause reel">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M10 5v14"></path><path d="M14 5v14"></path></svg>
+                  </button>
+                  <button class="video-control" data-audio-toggle type="button" aria-label="Unmute reel">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4Z"></path><path d="m22 9-6 6"></path><path d="m16 9 6 6"></path></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar photo"><img src="solid-mecanique-avatar.jpeg" alt="SOLID MECANIQUE avatar"></div>
+                  <div class="feed-copy"><strong>SOLID MÉCANIQUE <span class="verify">✓</span></strong><span>SolidWorks engineering lessons and practical exercises</span></div>
+                </div>
+                <h3>SolidWorks lessons for beginners and professionals.</h3>
+                <p>Simple explanations, engineering design tips, and practical exercises to improve your CAD skills.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action liked" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>1.2k</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>84</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-open="s-profile"><svg class="icon" viewBox="0 0 24 24"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg><span>Account</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">Coding</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">💻</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar mint">Y</div>
+                  <div class="feed-copy"><strong>Youcef Omrani <span class="verify">✓</span></strong><span>App developer - Oran</span></div>
+                </div>
+                <h3>3 mistakes every Flutter beginner makes.</h3>
+                <p>Quick tips before your first paid project, including file structure and professional handoff.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>856</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>47</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-open="s-request"><svg class="icon" viewBox="0 0 24 24"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg><span>Order</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">Marketing</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">📊</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar rose">S</div>
+                  <div class="feed-copy"><strong>Sara Meziani <span class="verify">✓</span></strong><span>Digital marketing expert - Constantine</span></div>
+                </div>
+                <h3>One strategy tripled sales.</h3>
+                <p>A short example for a local shop campaign, from offer selection to measuring results after one month.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>2.1k</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>132</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-toast="Following"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg><span>Follow</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">Content Creation</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">🎬</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar amber">N</div>
+                  <div class="feed-copy">
+                    <strong>Nadia Bouzid <span class="verify">✓</span></strong>
+                    <span>Educational content producer - Blida</span>
+                  </div>
+                </div>
+                <h3>How do you turn a simple idea into an educational video that grabs attention?</h3>
+                <p>A fast model: first-three-seconds hook, visual example, then a clear prompt to apply or save.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>740</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>61</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-toast="Following"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg><span>Follow</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">University Learning</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">🎓</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar blue">D</div>
+                  <div class="feed-copy">
+                    <strong>Dr. Meriem Kasmi <span class="verify">✓</span></strong>
+                    <span>Economics professor - University of Algiers 3</span>
+                  </div>
+                </div>
+                <h3>The Feynman method for understanding any lesson before an exam.</h3>
+                <p>Explain the idea as if teaching a friend, find the gaps, then rebuild the summary in your own words.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>1.8k</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>203</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-open="s-roomit"><svg class="icon" viewBox="0 0 24 24"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg><span>Room</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">Editing</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">✂</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar mint">R</div>
+                  <div class="feed-copy">
+                    <strong>Rami Hammou <span class="verify">✓</span></strong>
+                    <span>Video editor - Setif</span>
+                  </div>
+                </div>
+                <h3>Three transitions that make reels look more premium.</h3>
+                <p>Use cutting on motion, audio sync, and switch shots half a second before attention drops.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>965</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>88</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-open="s-request"><svg class="icon" viewBox="0 0 24 24"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg><span>Order</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">Product Photography</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">📷</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar rose">L</div>
+                  <div class="feed-copy">
+                    <strong>Lina Mansouri <span class="verify">✓</span></strong>
+                    <span>Product photographer - Annaba</span>
+                  </div>
+                </div>
+                <h3>How do you shoot a product with only a phone and make it ad-ready?</h3>
+                <p>Side window light, clean background, subtle reflection, and a close-up that shows texture clearly.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>1.1k</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>96</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-toast="Following"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg><span>Follow</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">Project Management</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">📌</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar amber">K</div>
+                  <div class="feed-copy">
+                    <strong>Kamel Cherif <span class="verify">✓</span></strong>
+                    <span>Digital project manager - Tipaza</span>
+                  </div>
+                </div>
+                <h3>A simple template that keeps small projects from drifting.</h3>
+                <p>Define the outcome, owner, deadline, first step, and acceptance criteria before execution.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>680</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>54</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-toast="Prototype template copied"><svg class="icon" viewBox="0 0 24 24"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg><span>Template</span></button>
+              </div>
+            </article>
+
+            <article class="reel">
+              <div class="reel-badge">Artificial Intelligence</div>
+              <div class="auto-video" aria-label="Autoplay reel preview">
+                <span class="video-orbit"></span>
+                <span class="video-orbit two"></span>
+                <span class="video-meter"><span></span></span>
+              </div>
+              <div class="reel-visual">AI</div>
+              <div class="reel-copy">
+                <div class="person-row">
+                  <div class="avatar blue">M</div>
+                  <div class="feed-copy">
+                    <strong>Marwan Rezki <span class="verify">✓</span></strong>
+                    <span>AI tools trainer - Constantine</span>
+                  </div>
+                </div>
+                <h3>One prompt turns a service idea into a client-ready offer.</h3>
+                <p>Write the goal, audience, desired outcome, constraints, then ask for three versions with different levels of formality.</p>
+              </div>
+              <div class="reel-actions">
+                <button class="reel-action" data-like><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg><span>2.4k</span></button>
+                <button class="reel-action" data-toast="Comments opened"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>310</span></button>
+                <button class="reel-action" data-toast="Reel saved"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg><span>Save</span></button>
+                <button class="reel-action" data-open="s-roomit"><svg class="icon" viewBox="0 0 24 24"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg><span>Learn</span></button>
+              </div>
+            </article>
+            </div>
+          </section>
+
+          <section class="app-screen" id="s-profile">
+            <div class="profile-card">
+              <div class="profile-cover">
+                <button class="icon-btn" style="position:absolute;right:14px;top:14px" data-open="s-feed">←</button>
+                <div class="profile-avatar"><img src="solid-mecanique-avatar.jpeg" alt="SOLID MECANIQUE avatar"></div>
+              </div>
+              <div class="profile-info">
+                <h2>SOLID MÉCANIQUE <span class="verify">✓</span></h2>
+                <div class="hint">@khaloua_brahim46</div>
+                <div class="role">Mechanical engineering and SolidWorks education</div>
+                <p class="bio">Specialized engineer sharing simplified SolidWorks lessons, engineering design tips, and practical exercises for beginners and professionals.</p>
+                <p class="bio">WhatsApp: +213540956110<br>solidmecanique.com</p>
+                <div class="profile-stats">
+                  <div><strong>1,053</strong><span>Following</span></div>
+                  <div><strong>12K</strong><span>Followers</span></div>
+                  <div><strong>31.3K</strong><span>Likes</span></div>
+                </div>
+                <div class="actions">
+                  <button class="primary" style="flex:1" data-toast="Following SOLID MÉCANIQUE">Follow</button>
+                  <button class="secondary" style="flex:1" data-toast="Message panel opened">Message</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="portfolio">
+              <div class="work" style="background-image:url('solid-mecanique-profile.jpeg');background-size:cover;background-position:center"><span>9.2K views</span></div>
+              <div class="work">⚙<span>94.9K views</span></div>
+              <div class="work">🧩<span>102.9K views</span></div>
+              <div class="work">📐<span>SolidWorks</span></div>
+            </div>
+
+            <article class="course" data-course="design">
+              <div class="course-row">
+                <div class="course-icon">⚙</div>
+                <div class="spacer"><strong class="course-title">SolidWorks Essentials</strong><span class="course-meta">Beginner lessons - practical exercises</span></div>
+                <div class="price">Free</div>
+              </div>
+            </article>
+            <article class="course" data-course="motion">
+              <div class="course-row">
+                <div class="course-icon">📐</div>
+                <div class="spacer"><strong class="course-title">Mechanical Design Practice</strong><span class="course-meta">Advanced CAD exercises - design workflow</span></div>
+                <div class="price">2,500 DZD</div>
+              </div>
+            </article>
+          </section>
+
+          <section class="app-screen" id="s-request">
+            <div class="mobile-head">
+              <button class="icon-btn" data-open="s-profile">←</button>
+              <h2>Request Service</h2>
+              <span></span>
+            </div>
+
+            <div class="request-card">
+              <div class="avatar blue">🎨</div>
+              <div class="spacer">
+                <strong>Amine Belkacem <span class="verify">✓</span></strong>
+                <div class="hint">Brand identity design - starts at 5,000 DZD</div>
+              </div>
+              <strong style="color:var(--amber)">4.9</strong>
+            </div>
+
+            <form class="form" id="requestForm">
+              <div class="field">
+                <label for="service">Service type</label>
+                <input id="service" required placeholder="Example: logo design for a restaurant">
+              </div>
+              <div class="field">
+                <label for="details">Request details</label>
+                <textarea id="details" required placeholder="Describe what you need, colors, deadline, and close examples..."></textarea>
+              </div>
+              <div class="field">
+                <label>Budget</label>
+                <div class="chips" data-group>
+                  <button class="chip" type="button">Under 5k</button>
+                  <button class="chip active" type="button">5k - 15k</button>
+                  <button class="chip" type="button">15k - 30k</button>
+                  <button class="chip" type="button">+30k</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>Payment</label>
+                <div class="chips" data-group>
+                  <button class="chip active" type="button">On delivery</button>
+                  <button class="chip" type="button">BaridiMob</button>
+                  <button class="chip" type="button">CIB</button>
+                </div>
+              </div>
+              <button class="primary" type="submit">Send request</button>
+            </form>
+          </section>
+
+          <section class="app-screen" id="s-roomit">
+            <div class="mobile-head">
+              <h2>Roomit</h2>
+              <button class="mini-primary" data-toast="Room creation form prepared">+ Room</button>
+            </div>
+            <div class="chips" data-group>
+              <button class="chip active">All</button>
+              <button class="chip">Live</button>
+              <button class="chip">Lectures</button>
+              <button class="chip">Workshops</button>
+              <button class="chip">Private lessons</button>
+            </div>
+
+            <div class="feed">
+              <article class="room" data-room="marketing-live">
+                <div class="room-top">
+                  <div><strong class="room-title">Lecture: Digital Marketing Fundamentals</strong><div class="room-host">Dr. Sara Meziani - University of Algiers 3</div></div>
+                  <span class="live">Live</span>
+                </div>
+                <div class="room-actions"><span>142 listeners now</span><button class="mini-primary" data-toast="Joined the demo room">Join</button></div>
+              </article>
+              <article class="room" data-room="ux-workshop">
+                <div class="room-top">
+                  <div><strong class="room-title">Workshop: UI/UX for Beginners</strong><div class="room-host">Amine Belkacem</div></div>
+                  <span class="soon">Tomorrow 18:00</span>
+                </div>
+                <div class="room-actions"><span>34 registered</span><button class="mini-primary" data-toast="Reminder enabled">Reminder</button></div>
+              </article>
+              <article class="room" data-room="python-private">
+                <div class="room-top">
+                  <div><strong class="room-title">Private lesson: Python for Beginners</strong><div class="room-host">Youcef Omrani</div></div>
+                  <span class="soon">Saturday 10:00</span>
+                </div>
+                <div class="room-actions"><span>800 DZD / session</span><button class="mini-primary" data-toast="Demo seat reserved">Book</button></div>
+              </article>
+              <article class="room" data-room="startup-session">
+                <div class="room-top">
+                  <div><strong class="room-title">How to Start Your Project in Algeria</strong><div class="room-host">Nadia Bouzid - Entrepreneur</div></div>
+                  <span class="soon">Sunday 15:00</span>
+                </div>
+                <div class="room-actions"><span>Free - 89 registered</span><button class="mini-primary" data-toast="Reminder enabled">Reminder</button></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="app-screen" id="s-account">
+            <div class="mobile-head">
+              <h2>Account</h2>
+              <button class="mini-primary" data-action="edit-account">Edit</button>
+            </div>
+
+            <div class="account-panel">
+              <div class="account-top">
+                <div class="account-photo">I</div>
+                <div class="spacer">
+                  <strong>Imade Ghazi</strong>
+                  <div class="hint">Student founder - Algiers</div>
+                  <div class="hint">Interested in design, AI tools, and digital business.</div>
+                </div>
+              </div>
+
+              <div class="account-grid">
+                <div class="account-stat"><strong>12</strong><span>Saved reels</span></div>
+                <div class="account-stat"><strong>4</strong><span>Booked rooms</span></div>
+                <div class="account-stat"><strong>2</strong><span>Active requests</span></div>
+                <div class="account-stat"><strong>86%</strong><span>Profile strength</span></div>
+              </div>
+
+              <article class="course" data-course="design">
+                <div class="course-row">
+                  <div class="course-icon">🎓</div>
+                  <div class="spacer"><strong class="course-title">Continue learning</strong><span class="course-meta">Commercial Design Fundamentals - lesson 4</span></div>
+                  <div class="price">Resume</div>
+                </div>
+              </article>
+
+              <article class="room" data-room="ux-workshop">
+                <div class="room-top">
+                  <div><strong class="room-title">Next booking</strong><div class="room-host">UI/UX Workshop with Amine Belkacem</div></div>
+                  <span class="soon">Tomorrow</span>
+                </div>
+                <div class="room-actions"><span>Reminder enabled</span><button class="mini-primary" data-room="ux-workshop">Open</button></div>
+              </article>
+            </div>
+          </section>
+
+          <nav class="bottom-nav" aria-label="Mobile navigation">
+            <button class="nav active" data-open="s-feed"><b><svg class="icon" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg></b><span>Home</span></button>
+            <button class="nav" data-open="s-roomit"><b><svg class="icon" viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v5a4 4 0 0 0 8 0V7a4 4 0 0 0-4-4Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></b><span>Roomit</span></button>
+            <button class="nav add" data-toast="Publishing is prepared for the next version"><b><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></b></button>
+            <button class="nav" data-open="s-profile"><b><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></b><span>Discover</span></button>
+            <button class="nav" data-open="s-account"><b><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></b><span>Account</span></button>
+          </nav>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal-layer" id="modalLayer" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h3 id="modalTitle">Skillink</h3>
+        <button class="icon-btn" data-close-modal title="Close">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const screens = document.querySelectorAll(".app-screen");
+    const topTabs = document.querySelectorAll(".tab");
+    const bottomTabs = document.querySelectorAll(".bottom-nav .nav[data-open]");
+    const toast = document.getElementById("toast");
+    const modalLayer = document.getElementById("modalLayer");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    let currentLang = "en";
+
+    const copy = {
+      en: {
+        pitch: "Enhanced prototype, ready for presentation",
+        heroTitle: 'Turn learning into <span>real opportunities</span> inside one app.',
+        heroText: "Skillink brings skilled creators, students, and project owners into one fast vertical experience: useful reels, verified profiles, service requests, and live rooms for lessons and workshops.",
+        viewExperience: "View experience",
+        exploreRoomit: "Explore Roomit",
+        search: "Search",
+        notifications: "Notifications",
+        account: "Account",
+        profile: "Profile",
+        request: "Request",
+        start: "Start",
+        feed: "Feed",
+        forYou: "For you",
+        design: "Design",
+        coding: "Coding",
+        marketing: "Marketing",
+        roomJoined: "You joined the room. Audio stage is now ready.",
+        courseOpened: "Course opened. Continue learning from the next lesson.",
+        saved: "Saved to your learning library.",
+        accountUpdated: "Account preferences updated.",
+        searchTitle: "Search Skillink",
+        notificationTitle: "Notifications",
+        editAccount: "Edit account",
+        close: "Close"
+      },
+      ar: {
+        pitch: "نموذج محسّن وجاهز للعرض",
+        heroTitle: 'حوّل التعلّم إلى <span>فرص حقيقية</span> داخل تطبيق واحد.',
+        heroText: "يجمع Skillink صناع المهارات والطلبة وأصحاب المشاريع في تجربة ريلز سريعة: محتوى مفيد، حسابات موثقة، طلب خدمات، ورومات مباشرة للدروس والورشات.",
+        viewExperience: "شاهد التجربة",
+        exploreRoomit: "استكشف Roomit",
+        search: "بحث",
+        notifications: "الإشعارات",
+        account: "حسابي",
+        profile: "الملف",
+        request: "طلب",
+        start: "البداية",
+        feed: "الريلز",
+        forYou: "لك",
+        design: "تصميم",
+        coding: "برمجة",
+        marketing: "تسويق",
+        roomJoined: "تم الدخول إلى الروم. منصة الصوت جاهزة الآن.",
+        courseOpened: "تم فتح الدورة. يمكنك متابعة الدرس التالي.",
+        saved: "تم الحفظ في مكتبة التعلم.",
+        accountUpdated: "تم تحديث تفضيلات الحساب.",
+        searchTitle: "البحث في Skillink",
+        notificationTitle: "الإشعارات",
+        editAccount: "تعديل الحساب",
+        close: "إغلاق"
+      }
+    };
+
+    const rooms = {
+      "marketing-live": {
+        en: ["Lecture: Digital Marketing Fundamentals", "Live room with Dr. Sara Meziani. 142 listeners are currently inside.", "Join room"],
+        ar: ["محاضرة: أساسيات التسويق الرقمي", "روم مباشر مع د. سارة مزياني. يوجد 142 مستمعًا الآن.", "ادخل الروم"]
+      },
+      "ux-workshop": {
+        en: ["Workshop: UI/UX for Beginners", "Scheduled workshop with Amine Belkacem. Reminder is enabled for tomorrow 18:00.", "Open workshop"],
+        ar: ["ورشة UI/UX للمبتدئين", "ورشة مجدولة مع أمين بلقاسم. التذكير مفعّل لغدًا 18:00.", "افتح الورشة"]
+      },
+      "python-private": {
+        en: ["Private lesson: Python for Beginners", "One-to-one tutoring with Youcef Omrani for 800 DZD per session.", "Book session"],
+        ar: ["درس خاص: Python للمبتدئين", "درس فردي مع يوسف عمراني بسعر 800 دج للجلسة.", "احجز الجلسة"]
+      },
+      "startup-session": {
+        en: ["How to Start Your Project in Algeria", "Free session with Nadia Bouzid about validating and launching a local project.", "Reserve seat"],
+        ar: ["كيف تبدأ مشروعك في الجزائر", "جلسة مجانية مع نادية بوزيد حول اختبار وإطلاق مشروع محلي.", "احجز مقعدًا"]
+      }
+    };
+
+    const courses = {
+      design: {
+        en: ["SolidWorks Essentials", "Beginner-friendly lessons, simplified explanations, and practical CAD exercises.", "Start course"],
+        ar: ["أساسيات SolidWorks", "دروس مناسبة للمبتدئين، شروحات مبسطة، وتمارين CAD عملية.", "ابدأ الدورة"]
+      },
+      motion: {
+        en: ["Mechanical Design Practice", "Advanced mechanical design workflow with SolidWorks exercises and project practice.", "Continue"],
+        ar: ["تطبيقات التصميم الميكانيكي", "منهج عملي متقدم في التصميم الميكانيكي مع تمارين SolidWorks ومشاريع تطبيقية.", "تابع"]
+      }
+    };
+
+    const searchItems = [
+      ["SOLID MECANIQUE", "SolidWorks lessons and mechanical engineering design", "s-profile"],
+      ["UI/UX Workshop", "Roomit workshop tomorrow at 18:00", "s-roomit"],
+      ["Commercial Design Fundamentals", "Free course - 12 lessons", "s-profile"],
+      ["Python for Beginners", "Private lesson - 800 DZD/session", "s-roomit"],
+      ["AI tools trainer", "Marwan Rezki - Constantine", "s-feed"]
+    ];
+
+    const reelCopies = {
+      en: [
+        ["Mechanical Engineering", "SOLID MÉCANIQUE", "SolidWorks engineering lessons and practical exercises", "SolidWorks lessons for beginners and professionals.", "Simple explanations, engineering design tips, and practical exercises to improve your CAD skills."],
+        ["Coding", "Youcef Omrani", "App developer - Oran", "3 mistakes every Flutter beginner makes.", "Quick tips before your first paid project, including file structure and professional handoff."],
+        ["Marketing", "Sara Meziani", "Digital marketing expert - Constantine", "One strategy tripled sales.", "A short example for a local shop campaign, from offer selection to measuring results after one month."],
+        ["Content Creation", "Nadia Bouzid", "Educational content producer - Blida", "How do you turn a simple idea into an educational video that grabs attention?", "A fast model: first-three-seconds hook, visual example, then a clear prompt to apply or save."],
+        ["University Learning", "Dr. Meriem Kasmi", "Economics professor - University of Algiers 3", "The Feynman method for understanding any lesson before an exam.", "Explain the idea as if teaching a friend, find the gaps, then rebuild the summary in your own words."],
+        ["Editing", "Rami Hammou", "Video editor - Setif", "Three transitions that make reels look more premium.", "Use cutting on motion, audio sync, and switch shots half a second before attention drops."],
+        ["Product Photography", "Lina Mansouri", "Product photographer - Annaba", "How do you shoot a product with only a phone and make it ad-ready?", "Side window light, clean background, subtle reflection, and a close-up that shows texture clearly."],
+        ["Project Management", "Kamel Cherif", "Digital project manager - Tipaza", "A simple template that keeps small projects from drifting.", "Define the outcome, owner, deadline, first step, and acceptance criteria before execution."],
+        ["Artificial Intelligence", "Marwan Rezki", "AI tools trainer - Constantine", "One prompt turns a service idea into a client-ready offer.", "Write the goal, audience, desired outcome, constraints, then ask for three versions with different levels of formality."]
+      ],
+      ar: [
+        ["هندسة ميكانيكية", "SOLID MÉCANIQUE", "دروس SolidWorks وتمارين عملية في التصميم الهندسي", "دروس SolidWorks للمبتدئين والمحترفين.", "شروحات مبسطة، نصائح في التصميم الهندسي، وتمارين عملية لتطوير مهارات CAD."],
+        ["برمجة", "يوسف عمراني", "مطور تطبيقات - وهران", "3 أخطاء يقع فيها كل مبتدئ Flutter.", "نصائح سريعة قبل أول مشروع مدفوع، مع ترتيب الملفات وتسليم العمل باحتراف."],
+        ["تسويق", "سارة مزياني", "خبيرة تسويق رقمي - قسنطينة", "استراتيجية واحدة ضاعفت المبيعات ثلاث مرات.", "مثال مختصر لحملة متجر محلي من اختيار العرض إلى قياس النتائج."],
+        ["صناعة محتوى", "نادية بوزيد", "منتجة محتوى تعليمي - البليدة", "كيف تحول فكرة بسيطة إلى فيديو تعليمي جذاب؟", "نموذج سريع: خطاف في أول 3 ثوانٍ، مثال بصري، ثم دعوة واضحة للتطبيق أو الحفظ."],
+        ["تعليم جامعي", "د. مريم قاسمي", "أستاذة اقتصاد - جامعة الجزائر 3", "طريقة Feynman لفهم أي درس قبل الامتحان.", "اشرح الفكرة لصديق، اكتشف الفراغات، ثم أعد بناء الملخص بكلماتك."],
+        ["مونتاج", "رامي حمو", "مونتير فيديو - سطيف", "ثلاث انتقالات تجعل الريلز يبدو أغلى.", "استخدم القص على الحركة، مزامنة الصوت، وتغيير اللقطة قبل الملل بنصف ثانية."],
+        ["تصوير منتجات", "لينا منصوري", "مصورة منتجات - عنابة", "كيف تصور منتجًا بهاتف فقط وتجعله جاهزًا للإعلان؟", "ضوء جانبي، خلفية نظيفة، انعكاس خفيف، ولقطة قريبة تظهر ملمس المنتج."],
+        ["إدارة مشاريع", "كمال شريف", "مدير مشاريع رقمية - تيبازة", "قالب بسيط يمنع ضياع المشاريع الصغيرة.", "حدد النتيجة، المسؤول، الموعد، أول خطوة، ومعيار القبول قبل التنفيذ."],
+        ["ذكاء اصطناعي", "مروان رزقي", "مدرب أدوات AI - قسنطينة", "Prompt واحد يحول فكرة الخدمة إلى عرض جاهز.", "اكتب الهدف، الجمهور، النتيجة المطلوبة، القيود، ثم اطلب ثلاث نسخ بدرجات رسمية مختلفة."]
+      ]
+    };
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function t(key) {
+      return copy[currentLang][key] || copy.en[key] || key;
+    }
+
+    function setText(selector, value, html = false) {
+      const node = document.querySelector(selector);
+      if (!node) return;
+      if (html) node.innerHTML = value;
+      else node.textContent = value;
+    }
+
+    function applyLanguage(lang, announce = true) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      setText(".pitch", t("pitch"));
+      setText(".hero h2", t("heroTitle"), true);
+      setText(".hero-text", t("heroText"));
+      setText(".hero-actions .primary", t("viewExperience"));
+      setText(".hero-actions .secondary", t("exploreRoomit"));
+      const tabs = document.querySelectorAll(".screen-tabs .tab");
+      [t("start"), t("feed"), t("profile"), t("request"), "Roomit"].forEach((label, index) => {
+        if (tabs[index]) tabs[index].textContent = label;
+      });
+      const chips = document.querySelectorAll(".reels-tabs .chip");
+      [t("forYou"), t("design"), t("coding"), t("marketing")].forEach((label, index) => {
+        if (chips[index]) chips[index].textContent = label;
+      });
+      document.querySelectorAll("[data-action='search']").forEach(btn => btn.title = t("search"));
+      document.querySelectorAll("[data-action='notifications']").forEach(btn => btn.title = t("notifications"));
+      document.querySelectorAll(".bottom-nav .nav span").forEach((label, index) => {
+        const labels = lang === "ar" ? ["الرئيسية", "Roomit", "اكتشف", "حسابي"] : ["Home", "Roomit", "Discover", "Account"];
+        label.textContent = labels[index] || label.textContent;
+      });
+      document.querySelectorAll(".reel").forEach((reel, index) => {
+        const data = reelCopies[lang][index];
+        if (!data) return;
+        reel.querySelector(".reel-badge").textContent = data[0];
+        const strong = reel.querySelector(".feed-copy strong");
+        const meta = reel.querySelector(".feed-copy > span");
+        const title = reel.querySelector(".reel-copy h3");
+        const body = reel.querySelector(".reel-copy p");
+        if (strong) strong.innerHTML = `${data[1]} <span class="verify">✓</span>`;
+        if (meta) meta.textContent = data[2];
+        if (title) title.textContent = data[3];
+        if (body) body.textContent = data[4];
+      });
+      setText("#s-account .mobile-head h2", t("account"));
+      setText("#s-request .mobile-head h2", lang === "ar" ? "طلب خدمة" : "Request Service");
+      setText("#s-roomit .mobile-head h2", "Roomit");
+      setText("#s-profile .role", lang === "ar" ? "هندسة ميكانيكية وتعليم SolidWorks" : "Mechanical engineering and SolidWorks education");
+      const profileBios = document.querySelectorAll("#s-profile .bio");
+      if (profileBios[0]) profileBios[0].textContent = lang === "ar" ? "مهندس متخصص يشارك دروس SolidWorks مبسطة، نصائح في التصميم الهندسي، وتمارين عملية للمبتدئين والمحترفين." : "Specialized engineer sharing simplified SolidWorks lessons, engineering design tips, and practical exercises for beginners and professionals.";
+      if (profileBios[1]) profileBios[1].innerHTML = lang === "ar" ? "WhatsApp: +213540956110<br>solidmecanique.com" : "WhatsApp: +213540956110<br>solidmecanique.com";
+      const profileButtons = document.querySelectorAll("#s-profile .actions button");
+      if (profileButtons[0]) profileButtons[0].textContent = lang === "ar" ? "متابعة" : "Follow";
+      if (profileButtons[1]) profileButtons[1].textContent = lang === "ar" ? "رسالة" : "Message";
+      document.querySelectorAll("[data-lang-toggle]").forEach(btn => {
+        btn.setAttribute("aria-label", lang === "ar" ? "Switch to English" : "التبديل إلى العربية");
+      });
+      if (announce) showToast(lang === "ar" ? "تم تغيير اللغة إلى العربية" : "Language switched to English");
+    }
+
+    function openModal(title, body) {
+      modalTitle.textContent = title;
+      modalBody.innerHTML = body;
+      modalLayer.classList.add("show");
+      modalLayer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modalLayer.classList.remove("show");
+      modalLayer.setAttribute("aria-hidden", "true");
+    }
+
+    function modalItem(icon, title, text, action = "") {
+      return `
+        <div class="modal-item">
+          <div class="course-icon">${icon}</div>
+          <div class="spacer">
+            <strong>${title}</strong>
+            <p>${text}</p>
+            ${action}
+          </div>
+        </div>
+      `;
+    }
+
+    function openSearch() {
+      const placeholder = currentLang === "ar" ? "ابحث عن مهارة، دورة، روم..." : "Search skills, courses, rooms...";
+      const results = searchItems.map(([title, desc, screen]) => modalItem("⌕", title, desc, `<button class="mini-primary" data-open="${screen}" data-close-after>${currentLang === "ar" ? "فتح" : "Open"}</button>`)).join("");
+      openModal(t("searchTitle"), `
+        <div class="search-box">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input id="modalSearchInput" placeholder="${placeholder}" autofocus>
+        </div>
+        <div id="searchResults">${results}</div>
+      `);
+      const input = document.getElementById("modalSearchInput");
+      const resultBox = document.getElementById("searchResults");
+      input && input.addEventListener("input", () => {
+        const value = input.value.toLowerCase();
+        const filtered = searchItems.filter(item => item.join(" ").toLowerCase().includes(value));
+        resultBox.innerHTML = filtered.map(([title, desc, screen]) => modalItem("⌕", title, desc, `<button class="mini-primary" data-open="${screen}" data-close-after>${currentLang === "ar" ? "فتح" : "Open"}</button>`)).join("") || modalItem("•", currentLang === "ar" ? "لا توجد نتائج" : "No results", currentLang === "ar" ? "جرّب كلمة أخرى." : "Try another keyword.");
+      });
+    }
+
+    function openNotifications() {
+      openModal(t("notificationTitle"), [
+        modalItem("🔴", currentLang === "ar" ? "روم مباشر الآن" : "Live room now", currentLang === "ar" ? "محاضرة التسويق الرقمي بدأت ويمكنك الدخول الآن." : "Digital marketing lecture has started and you can join now.", `<button class="mini-primary" data-room="marketing-live">${currentLang === "ar" ? "ادخل" : "Join"}</button>`),
+        modalItem("🎓", currentLang === "ar" ? "درس جديد" : "New lesson", currentLang === "ar" ? "تم فتح الدرس الرابع من أساسيات التصميم التجاري." : "Lesson 4 of Commercial Design Fundamentals is unlocked.", `<button class="mini-primary" data-course="design">${currentLang === "ar" ? "افتح" : "Open"}</button>`),
+        modalItem("💬", currentLang === "ar" ? "رد جديد" : "New reply", currentLang === "ar" ? "أمين رد على طلب الخدمة التجريبي." : "Amine replied to your demo service request.", `<button class="mini-primary" data-open="s-request" data-close-after>${currentLang === "ar" ? "عرض" : "View"}</button>`)
+      ].join(""));
+    }
+
+    function openRoomDetail(id) {
+      const room = rooms[id];
+      if (!room) return;
+      const [title, desc, action] = room[currentLang];
+      openModal(title, `
+        ${modalItem("🎙️", title, desc)}
+        ${modalItem("👥", currentLang === "ar" ? "المشاركون" : "Participants", currentLang === "ar" ? "المكان الصوتي يحاكي تجربة دخول الرومات." : "The audio stage simulates joining a live room.")}
+        <button class="primary" style="width:100%" data-join-room="${id}">${action}</button>
+      `);
+    }
+
+    function openCourseDetail(id) {
+      const course = courses[id];
+      if (!course) return;
+      const [title, desc, action] = course[currentLang];
+      openModal(title, `
+        ${modalItem("🎓", title, desc)}
+        ${modalItem("✅", currentLang === "ar" ? "ما ستحصل عليه" : "What you get", currentLang === "ar" ? "دروس قصيرة، ملفات تطبيق، ومتابعة تقدم داخل الحساب." : "Short lessons, practice files, and progress tracking in your account.")}
+        <button class="primary" style="width:100%" data-start-course="${id}">${action}</button>
+      `);
+    }
+
+    function openAccountEditor() {
+      openModal(t("editAccount"), `
+        <div class="field"><label>${currentLang === "ar" ? "الاسم" : "Name"}</label><input value="Imade Ghazi"></div>
+        <div class="field"><label>${currentLang === "ar" ? "الاهتمامات" : "Interests"}</label><input value="Design, AI tools, digital business"></div>
+        <div class="field"><label>${currentLang === "ar" ? "اللغة" : "Language"}</label><select><option>English</option><option>Arabic</option></select></div>
+        <button class="primary" style="width:100%" data-save-account>${currentLang === "ar" ? "حفظ التغييرات" : "Save changes"}</button>
+      `);
+    }
+
+    function openScreen(id) {
+      screens.forEach(screen => screen.classList.toggle("active", screen.id === id));
+      topTabs.forEach(tab => tab.classList.toggle("active", tab.dataset.open === id));
+      bottomTabs.forEach(tab => tab.classList.toggle("active", tab.dataset.open === id || (id === "s-request" && tab.dataset.open === "s-profile")));
+      const active = document.getElementById(id);
+      if (active) active.scrollTop = 0;
+    }
+
+    function heartIcon() {
+      return '<svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg>';
+    }
+
+    function playStateIcon(isPaused) {
+      return isPaused
+        ? '<svg class="icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7Z"></path></svg>'
+        : '<svg class="icon" viewBox="0 0 24 24"><path d="M10 5v14"></path><path d="M14 5v14"></path></svg>';
+    }
+
+    function audioStateIcon(isMuted) {
+      return isMuted
+        ? '<svg class="icon" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4Z"></path><path d="m22 9-6 6"></path><path d="m16 9 6 6"></path></svg>'
+        : '<svg class="icon" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4Z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a9 9 0 0 1 0 14"></path></svg>';
+    }
+
+    function syncVideoControls(container) {
+      if (!container) return;
+      const video = container.querySelector("video");
+      const playButton = container.querySelector("[data-video-toggle]");
+      const audioButton = container.querySelector("[data-audio-toggle]");
+      if (video && playButton) {
+        playButton.innerHTML = playStateIcon(video.paused);
+        playButton.setAttribute("aria-label", video.paused ? "Play reel" : "Pause reel");
+      }
+      if (video && audioButton) {
+        audioButton.innerHTML = audioStateIcon(video.muted);
+        audioButton.setAttribute("aria-label", video.muted ? "Unmute reel" : "Mute reel");
+      }
+    }
+
+    function setActiveReel(reel) {
+      document.querySelectorAll(".reel").forEach(item => item.classList.toggle("is-playing", item === reel));
+      document.querySelectorAll(".real-video video").forEach(video => {
+        const shouldPlay = reel && reel.contains(video);
+        if (shouldPlay) {
+          video.loop = true;
+          video.play().catch(() => syncVideoControls(video.closest(".real-video")));
+        } else {
+          video.pause();
+        }
+        syncVideoControls(video.closest(".real-video"));
+      });
+      const meter = reel && reel.querySelector(".video-meter span");
+      if (meter) {
+        meter.style.animation = "none";
+        meter.offsetHeight;
+        meter.style.animation = "";
+      }
+    }
+
+    const reelTrack = document.getElementById("reelTrack");
+    const reels = [...document.querySelectorAll(".reel")];
+    if (reels.length) setActiveReel(reels[0]);
+
+    if (reelTrack && "IntersectionObserver" in window) {
+      const reelObserver = new IntersectionObserver(entries => {
+        entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+          .slice(0, 1)
+          .forEach(entry => setActiveReel(entry.target));
+      }, {
+        root: reelTrack,
+        threshold: [0.55, 0.7, 0.85]
+      });
+      reels.forEach(reel => reelObserver.observe(reel));
+    }
+
+    applyLanguage("en", false);
+
+    document.addEventListener("click", event => {
+      const videoToggle = event.target.closest("[data-video-toggle]");
+      if (videoToggle) {
+        event.preventDefault();
+        event.stopPropagation();
+        const container = videoToggle.closest(".real-video");
+        const video = container && container.querySelector("video");
+        if (!video) return;
+        if (video.paused) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+        syncVideoControls(container);
+        return;
+      }
+
+      const audioToggle = event.target.closest("[data-audio-toggle]");
+      if (audioToggle) {
+        event.preventDefault();
+        event.stopPropagation();
+        const container = audioToggle.closest(".real-video");
+        const video = container && container.querySelector("video");
+        if (!video) return;
+        video.muted = !video.muted;
+        if (video.paused) video.play().catch(() => {});
+        syncVideoControls(container);
+        return;
+      }
+
+      const closeButton = event.target.closest("[data-close-modal]");
+      if (closeButton || event.target === modalLayer) {
+        closeModal();
+        return;
+      }
+
+      const langButton = event.target.closest("[data-lang-toggle]");
+      if (langButton) {
+        applyLanguage(currentLang === "en" ? "ar" : "en", true);
+        return;
+      }
+
+      const actionButton = event.target.closest("[data-action]");
+      if (actionButton) {
+        const action = actionButton.dataset.action;
+        if (action === "search") openSearch();
+        if (action === "notifications") openNotifications();
+        if (action === "edit-account") openAccountEditor();
+        return;
+      }
+
+      const roomTarget = event.target.closest("[data-room]");
+      if (roomTarget) {
+        openRoomDetail(roomTarget.dataset.room);
+        return;
+      }
+
+      const courseTarget = event.target.closest("[data-course]");
+      if (courseTarget) {
+        openCourseDetail(courseTarget.dataset.course);
+        return;
+      }
+
+      const portfolioTarget = event.target.closest(".work");
+      if (portfolioTarget) {
+        openModal(currentLang === "ar" ? "عمل من البورتفوليو" : "Portfolio item", modalItem("◈", currentLang === "ar" ? "مشروع هوية بصرية" : "Brand identity project", currentLang === "ar" ? "عرض تجريبي لمشروع داخل حساب المهاري مع عدد المشاهدات والتفاعل." : "Demo portfolio project with views and engagement shown inside the skill profile."));
+        return;
+      }
+
+      const infoTarget = event.target.closest(".stat, .road-item");
+      if (infoTarget) {
+        const title = infoTarget.querySelector("strong, h3")?.textContent || "Skillink";
+        const text = infoTarget.querySelector("span, p")?.textContent || (currentLang === "ar" ? "تفاصيل إضافية حول هذه الميزة." : "Additional details about this feature.");
+        openModal(title, modalItem("ℹ", title, text));
+        return;
+      }
+
+      const reelInfo = event.target.closest(".reel-copy");
+      if (reelInfo) {
+        const title = reelInfo.querySelector("h3")?.textContent || "Reel";
+        const text = reelInfo.querySelector("p")?.textContent || "";
+        openModal(title, modalItem("▶", title, text, `<button class="mini-primary" data-open="s-profile" data-close-after>${currentLang === "ar" ? "فتح الحساب" : "Open profile"}</button>`));
+        return;
+      }
+
+      const joinRoom = event.target.closest("[data-join-room]");
+      if (joinRoom) {
+        showToast(t("roomJoined"));
+        closeModal();
+        openScreen("s-roomit");
+        return;
+      }
+
+      const startCourse = event.target.closest("[data-start-course]");
+      if (startCourse) {
+        showToast(t("courseOpened"));
+        closeModal();
+        openScreen("s-account");
+        return;
+      }
+
+      const saveAccount = event.target.closest("[data-save-account]");
+      if (saveAccount) {
+        showToast(t("accountUpdated"));
+        closeModal();
+        openScreen("s-account");
+        return;
+      }
+
+      const openButton = event.target.closest("[data-open]");
+      if (openButton) {
+        openScreen(openButton.dataset.open);
+        if (openButton.hasAttribute("data-close-after")) closeModal();
+      }
+
+      const toastButton = event.target.closest("[data-toast]");
+      if (toastButton) showToast(toastButton.dataset.toast);
+
+      const choice = event.target.closest("[data-choice]");
+      if (choice) {
+        document.querySelectorAll("[data-choice]").forEach(item => item.classList.remove("selected"));
+        choice.classList.add("selected");
+      }
+
+      const like = event.target.closest("[data-like]");
+      if (like) {
+        like.classList.toggle("liked");
+        const countNode = like.querySelector("span");
+        if (countNode) {
+          const count = countNode.textContent.trim();
+          like.innerHTML = heartIcon() + "<span>" + count + "</span>";
+        } else {
+          const count = like.textContent.replace(/[♥♡]/g, "").trim();
+          like.innerHTML = heartIcon() + "<span>" + count + "</span>";
+        }
+      }
+
+      const chip = event.target.closest(".chip");
+      if (chip && chip.parentElement && chip.parentElement.hasAttribute("data-group")) {
+        chip.parentElement.querySelectorAll(".chip").forEach(item => item.classList.remove("active"));
+        chip.classList.add("active");
+        if (chip.parentElement.classList.contains("reels-tabs")) {
+          const filter = chip.textContent.trim().toLowerCase();
+          reels.forEach(reel => {
+            const badge = reel.querySelector(".reel-badge")?.textContent.toLowerCase() || "";
+            const shouldShow = filter.includes("for") || filter.includes("لك") || badge.includes(filter);
+            reel.style.display = shouldShow ? "block" : "none";
+          });
+          const firstVisible = reels.find(reel => reel.style.display !== "none");
+          if (firstVisible && reelTrack) {
+            firstVisible.scrollIntoView({ block: "start", behavior: "smooth" });
+            setActiveReel(firstVisible);
+          }
+        }
+      }
+    });
+
+    document.getElementById("requestForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      showToast("Request sent successfully. Amine will contact you soon.");
+      form.reset();
+    });
+  </script>
+</body>
+</html>
+
+
+
